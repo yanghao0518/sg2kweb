@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>传感器设置</title>
+<meta charset="utf-8" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+</head>
+<style type="text/css">
+td {
+	height: 30px;
+}
+</style>
+<body>
+	<form id=_form>
+		<table width="800" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<!--  
+				<td width="30%"><input type="button" name="button1" value="导入" /></td>
+				-->
+				<td width="30%"><input type="button" id="save" value="保存" /></td>
+				<td width="40%"><input type="button" id="send" value="下传" /></td>
+			</tr>
+			<tr>
+				<td>网关序列号</td>
+				<td><input type="text" name="Gateway_Id" value="0x12abcdef" /></td>
+				<input type="hidden" name="Upload_Sensor_Type" id="Upload_Sensor_Type" />
+				<td><input type="checkbox" gg="Upload_Sensor_Type" checked="checked" />振动启动</td>
+			</tr>
+			<tr>
+				<td>传感器序列号</td>
+				<td><input type="text" name="Sensor_Id" value="0x12abcdef" /></td>
+				<td><input type="checkbox" gg="Upload_Sensor_Type" />直流上传</td>
+			</tr>
+
+			<tr>
+				<td>高通滤波</td>
+				<td><select name="HP_Filter">
+						<option value="0">无高通滤波</option>
+						<option value="1">3HZ高通滤波</option>
+						<option value="2" selected="selected">10HZ高通滤波</option>
+				    </select>
+				</td>
+				<td><input type="checkbox" gg="Upload_Sensor_Type" />加速度上传</td>
+			</tr>
+			<tr>
+				<td>X方向角度</td>
+				<td><input type="text" name="X_Angle" value="0" /></td>
+				<td><input type="checkbox" gg="Upload_Sensor_Type" checked="checked" />速度上传</td>
+			</tr>
+			<tr>
+				<td>特征值采集间隔</td>
+				<td><select name="Sample_Character_Time">
+						<option value="0">不上传</option>
+						<option value="1">1分钟</option>
+						<option value="2">5分钟</option>
+						<option value="3">10分钟</option>
+						<option value="4" selected="selected">30分钟</option>
+						<option value="5">1小时</option>
+						<option value="6">2小时</option>
+						<option value="7">6小时</option>
+						<option value="8">12小时</option>
+						<option value="9">1天</option>
+						<option value="10">2天</option>
+				</select></td>
+				<td rowspan="5"><input type="hidden" name="Upload_Wave_Type"
+					id="Upload_Wave_Type" /> <input type="checkbox"
+					id="Upload_Wave_Type0" checked="checked" />波形上传<br> <input
+					type="checkbox" id="Upload_Wave_Type1" />加速度X<br> <input
+					type="checkbox" id="Upload_Wave_Type2" />加速度Y<br> <input
+					type="checkbox" id="Upload_Wave_Type3" />加速度Z<br> <input
+					type="checkbox" id="Upload_Wave_Type4" checked="checked" />速度X<br>
+					<input type="checkbox" id="Upload_Wave_Type5" checked="checked" />速度Y<br>
+					<input type="checkbox" id="Upload_Wave_Type6" checked="checked" />速度Z<br>
+				</td>
+			</tr>
+			<tr>
+				<td>特征值上传间隔</td>
+				<td><select name="Upload_Character_Time">
+						<option value="0">不上传</option>
+						<option value="1">1分钟</option>
+						<option value="2">5分钟</option>
+						<option value="3">10分钟</option>
+						<option value="4">30分钟</option>
+						<option value="5">1小时</option>
+						<option value="6" selected="selected">2小时</option>
+						<option value="7">6小时</option>
+						<option value="8">12小时</option>
+						<option value="9">1天</option>
+						<option value="10">2天</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td>波形上传间隔</td>
+				<td><select name="Upload_Wave_Time">
+						<option value="0">不上传</option>
+						<option value="1">1分钟</option>
+						<option value="2">5分钟</option>
+						<option value="3">10分钟</option>
+						<option value="4">30分钟</option>
+						<option value="5">1小时</option>
+						<option value="6">2小时</option>
+						<option value="7">6小时</option>
+						<option value="8">12小时</option>
+						<option value="9" selected="selected">1天</option>
+						<option value="10">2天</option>
+						<option value="11">3天</option>
+						<option value="12">1周</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td>波形长度</td>
+				<td><select name="Wave_long">
+						<option value="0">512</option>
+						<option value="1" selected="selected">1024</option>
+						<option value="2">2048</option>
+						<option value="3">4096</option>
+						<option value="4">8192</option>
+				</select></td>
+			</tr>
+			<tr id="sty2">
+				<td>采样率</td>
+				<td><select name="Sample_Frequency">
+						<option value="1600">1600</option>
+						<option value="800" selected="selected">800</option>
+						<option value="400">400</option>
+						<option value="200">200</option>
+						<option value="100">100</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td>环境温度差</td>
+				<td><input type="text" name="Temperature_alarm_diff"
+					value="3500" /></td>
+				<!-- 
+				<td><input type="checkbox" name="checkbox12" />和环境温度差报警</td>
+				 -->
+			</tr>
+			<tr>
+				<td>温度高高报警值</td>
+				<td><input type="text" name="Temperature_alarm_HH" value="8000" /></td>
+				<!--
+				<td><input type="checkbox" name="checkbox13" />温度高高报警值</td>
+				-->
+			</tr>
+			<tr>
+				<td>温度变化量报警值</td>
+				<td><input type="text" name="Temperature_alarm_Change"
+					value="500" /></td>
+			</tr>
+			<tr>
+				<td>加速度x方向高高报警值</td>
+				<td><input type="text" name="Acc_X_alarm_HH" value="100" /></td>
+				<!--
+				<td><input type="checkbox" name="checkbox14" />加速度x方向高高报警</td>
+				-->
+			</tr>
+			<tr>
+				<td>加速度x方向高报警值</td>
+				<td><input type="text" name="Acc_X_alarm_H" value="80" /></td>
+			</tr>
+			<tr>
+				<td>加速度Y方向高高报警值</td>
+				<td><input type="text" name="Acc_Y_alarm_HH" value="100" /></td>
+				<!--
+				<td><input type="checkbox" name="checkbox15" />加速度Y方向高高报警</td>
+				-->
+			</tr>
+			<tr>
+				<td>加速度Y方向高报警值</td>
+				<td><input type="text" name="Acc_Y_alarm_H" value="80" /></td>
+			</tr>
+			<tr>
+				<td>加速度Z方向高高报警值</td>
+				<td><input type="text" name="Acc_Z_alarm_HH" value="100" /></td>
+				<!--
+				<td><input type="checkbox" name="checkbox16" />加速度Z方向高高报警</td>
+				-->
+			</tr>
+			<tr>
+				<td>加速度Z方向高报警值</td>
+				<td><input type="text" name="Acc_Z_alarm_H" value="80" /></td>
+			</tr>
+			<tr>
+				<td>速度x方向高高报警值</td>
+				<td><input type="text" name="Speed_X_alarm_HH" value="100" /></td>
+				<!--
+				<td><input type="checkbox" name="checkbox17" />速度x方向高高报警</td>
+				-->
+			</tr>
+			<tr>
+				<td>速度x方向高报警值</td>
+				<td><input type="text" name="Speed_X_alarm_H" value="80" /></td>
+			</tr>
+			<tr>
+				<td>速度Y方向高高报警值</td>
+				<td><input type="text" name="Speed_Y_alarm_HH" value="100" /></td>
+				<!--
+				<td><input type="checkbox" name="checkbox18" />速度Y方向高高报警</td>
+				-->
+			</tr>
+			<tr>
+				<td>速度Y方向高报警值</td>
+				<td><input type="text" name="Speed_Y_alarm_H" value="80" /></td>
+			</tr>
+			<tr>
+				<td>加速度Z方向高高报警值</td>
+				<td><input type="text" name="Speed_Z_alarm_HH" value="100" /></td>
+				<!--
+				<td><input type="checkbox" name="checkbox19" />速度Z方向高高报警</td>
+				-->
+			</tr>
+			<tr>
+				<td>加速度Z方向高报警值</td>
+				<td><input type="text" name="Speed_Z_alarm_H" value="80" /></td>
+			</tr>
+			<tr>
+				<td>数据包原始数据</td>
+				<td colspan="2"><textarea name="textarea1" cols="50" rows="5"></textarea></td>
+			</tr>
+		</table>
+	</form>
+</body>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/jquery.form.js"></script>
+<script type="text/javascript" src="js/form.js"></script>
+
+<script type="text/javascript">
+	$(function() {
+		var Upload_Sensor_Types = $('input [gg="Upload_Sensor_Type"]');
+		$.each(Upload_Sensor_Types,function(index,demo){
+			
+			alert(demo.checked);
+			
+		});
+		
+		/*var $form = $('#_form');
+		var onLoadSuccessCallBack = function(data){
+			//处理
+		};
+		var submitSuccessCallbackSave = function(){
+			layer.alert('操作成功！');
+		};
+		var submitSuccessCallbackSend = function(){
+			//加载条需要加载上一次包序号
+			
+		};
+		
+		initForm($form,{onLoadSuccessCallBack:onLoadSuccessCallBack});
+		$form.form('load', 'Test/');
+		//处理保存
+		$('#save').click(function(){
+			//处理隐藏域
+			
+			initForm($form,{onLoadSuccessCallBack:onLoadSuccessCallBack,url:'Test/save',submitSuccessCallback:submitSuccessCallbackSave});
+			$form.submit();
+		});
+		
+		//处理下发
+		$('#send').click(function(){
+			initForm($form,{onLoadSuccessCallBack:onLoadSuccessCallBack,url:'Test/send',submitSuccessCallback:submitSuccessCallbackSend});
+			$form.submit();
+		});*/
+		
+		
+	});
+</script>
+</html>

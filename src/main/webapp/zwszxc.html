@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<meta charset="utf-8" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+</head>
+<body>
+	<form name="form1" action="" enctype="">
+		<table>
+			<tr>
+				<td><input type="submit" name="submit1" id="save" value="保存" /></td>
+				<td><input type="button" name="button2" id="send" value="下传" /></td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" name="checkbox1" />网关号01<input
+					type="text" name="text1" id="wg1" value="0x12abc346"></td>
+				<td><input type="checkbox" name="checkbox2" />网关号02<input
+					type="text" name="text2" id="wg2" value="0x12abc347"></td>
+				<td><input type="checkbox" name="checkbox3" />网关号03<input
+					type="text" name="text3" id="wg3" value="0x12abc348"></td>
+			</tr>
+			<tr>
+				<td>传感器序列号01<input type="text" name="c1" value="0x12abc345"></td>
+				<td>传感器序列号01<input type="text" name="c2" value="0x12abc34a"></td>
+				<td>传感器序列号01<input type="text" name="c3" value="0x12abc34b"></td>
+			</tr>
+			<tr>
+				<td>传感器序列号02<input type="text" name="c1"></td>
+				<td>传感器序列号02<input type="text" name="c2"></td>
+				<td>传感器序列号02<input type="text" name="c3"></td>
+			</tr>
+			<tr>
+				<td>传感器序列号03<input type="text" name="c1"></td>
+				<td>传感器序列号03<input type="text" name="c2"></td>
+				<td>传感器序列号03<input type="text" name="c3"></td>
+			</tr>
+
+			<tr>
+				<td>传感器序列号04<input type="text" name="c1"></td>
+				<td>传感器序列号04<input type="text" name="c2"></td>
+				<td>传感器序列号04<input type="text" name="c3"></td>
+			</tr>
+
+			<tr>
+				<td>传感器序列号05<input type="text" name="c1"></td>
+				<td>传感器序列号05<input type="text" name="c2"></td>
+				<td>传感器序列号05<input type="text" name="c3"></td>
+			</tr>
+
+
+			<tr>
+				<td>传感器序列号06<input type="text" name="c1"></td>
+				<td>传感器序列号06<input type="text" name="c2"></td>
+				<td>传感器序列号06<input type="text" name="c3"></td>
+			</tr>
+
+
+			<tr>
+				<td>传感器序列号07<input type="text" name="c1"></td>
+				<td>传感器序列号07<input type="text" name="c2"></td>
+				<td>传感器序列号07<input type="text" name="c3"></td>
+			</tr>
+
+
+			<tr>
+				<td>传感器序列号08<input type="text" name="c1"></td>
+				<td>传感器序列号08<input type="text" name="c2"></td>
+				<td>传感器序列号08<input type="text" name="c3"></td>
+			</tr>
+
+			<tr>
+				<td>传感器序列号09<input type="text" name="c1"></td>
+				<td>传感器序列号09<input type="text" name="c2"></td>
+				<td>传感器序列号09<input type="text" name="c3"></td>
+			</tr>
+
+			<tr>
+				<td>传感器序列号10<input type="text" name="c1"></td>
+				<td>传感器序列号10<input type="text" name="c2"></td>
+				<td>传感器序列号10<input type="text" name="c3"></td>
+			</tr>
+
+			<tr>
+				<td>传感器序列号11<input type="text" name="c1"></td>
+				<td>传感器序列号11<input type="text" name="c2"></td>
+				<td>传感器序列号11<input type="text" name="c3"></td>
+			</tr>
+
+			<tr>
+				<td>传感器序列号12<input type="text" name="c1"></td>
+				<td>传感器序列号12<input type="text" name="c2"></td>
+				<td>传感器序列号12<input type="text" name="c3"></td>
+			</tr>
+
+			<tr>
+				<td>传感器序列号13<input type="text" name="c1"></td>
+				<td>传感器序列号13<input type="text" name="c2"></td>
+				<td>传感器序列号13<input type="text" name="c3"></td>
+			</tr>
+
+			<tr>
+				<td>传感器序列号14<input type="text" name="c1"></td>
+				<td>传感器序列号14<input type="text" name="c2"></td>
+				<td>传感器序列号14<input type="text" name="c3"></td>
+			</tr>
+
+			<tr>
+				<td>传感器序列号15<input type="text" name="c1"></td>
+				<td>传感器序列号15<input type="text" name="c2"></td>
+				<td>传感器序列号15<input type="text" name="c3"></td>
+			</tr>
+
+			<tr>
+				<td>传感器序列号16<input type="text" name="c1"></td>
+				<td>传感器序列号16<input type="text" name="c2"></td>
+				<td>传感器序列号16<input type="text" name="c3"></td>
+			</tr>
+
+
+		</table>
+	</form>
+</body>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript">
+	$(function() {
+
+		var succuss = function(result) {
+			if (result && result.code == 200) {
+				layer.alert('操作成功!');
+				return false;
+			}
+			console.info('result->' + result);
+			layer.alert('操作失败!');
+		};
+		var error = function(textStatus) {
+			layer.msg('请求错误!');
+		}
+
+		var requestSave = new baseRequest('/Test/saveZwConfig.do', succuss,
+				error);
+		var requestSend = new baseRequest('/Test/saveZwConfig.do', succuss,
+				error);
+
+		$('#save').click(function() {
+			var wg1 = $('#wg1').val();
+			var wg2 = $('#wg2').val();
+			var wg3 = $('#wg3').val();
+
+			if ('' == wg1 && '' == wg2 && '' == wg3) {
+				layer.msg('网关ID不能都为空！');
+				return false;
+			}
+
+			var c1s = $("input[name='c1']");
+			var c1arr = new Array;
+			$.each(c1s, function(index, item) {
+				if (item.value != '') {
+					c1arr.push(item.value);
+				}
+			});
+
+			var c2s = $("input[name='c2']");
+			var c2arr = new Array;
+			$.each(c2s, function(index, item) {
+				if (item.value != '') {
+					c2arr.push(item.value);
+				}
+			});
+
+			var c3s = $("input[name='c3']");
+			var c3arr = new Array;
+			$.each(c3s, function(index, item) {
+				if (item.value != '') {
+					c3arr.push(item.value);
+				}
+			});
+
+			var data1 = {
+				'Gateway_Id' : wg1,
+				'Sensor_Ids' : c1arr
+			};
+			var data2 = {
+				'Gateway_Id' : wg2,
+				'Sensor_Ids' : c2arr
+			};
+			var data3 = {
+				'Gateway_Id' : wg3,
+				'Sensor_Ids' : c3arr
+			};
+
+			var data = [ data1, data2, data3 ];
+
+			requestSave.send({
+				'jsonStr' : JSON.stringify(data)
+			});
+
+		});
+
+		$('#send').click(function() {
+			var wg1 = $('#wg1').val();
+			var wg2 = $('#wg2').val();
+			var wg3 = $('#wg3').val();
+
+			if ('' == wg1 && '' == wg2 && '' == wg3) {
+				layer.msg('网关ID不能都为空！');
+				return false;
+			}
+
+			var c1s = $("input[name='c1']");
+			var c1arr = new Array;
+			$.each(c1s, function(index, item) {
+				if (item.value != '') {
+					c1arr.push(item.value);
+				}
+			});
+
+			var c2s = $("input[name='c2']");
+			var c2arr = new Array;
+			$.each(c2s, function(index, item) {
+				if (item.value != '') {
+					c2arr.push(item.value);
+				}
+			});
+
+			var c3s = $("input[name='c3']");
+			var c3arr = new Array;
+			$.each(c3s, function(index, item) {
+				if (item.value != '') {
+					c3arr.push(item.value);
+				}
+			});
+
+			var data1 = {
+				'Gateway_Id' : wg1,
+				'Sensor_Ids' : c1arr
+			};
+			var data2 = {
+				'Gateway_Id' : wg2,
+				'Sensor_Ids' : c2arr
+			};
+			var data3 = {
+				'Gateway_Id' : wg3,
+				'Sensor_Ids' : c3arr
+			};
+
+			var data = [ data1, data2, data3 ];
+
+			requestSend.send({
+				'jsonStr' : JSON.stringify(data)
+			});
+
+		});
+	});
+</script>
+</html>

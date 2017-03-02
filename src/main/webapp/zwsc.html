@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>组网上传</title>
+<meta charset="utf-8" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+</head>
+<body>
+	<table>
+		<tr>
+			<td>网关ID</td>
+			<td><input type="text" value="" id="wgid" /></td>
+			<td><input type="checkbox" id="refresh" name="sx">刷新</td>
+		</tr>
+		<tr>
+			<td>传感器ID</td>
+			<td><input type="text" id="sensorid" value=""></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>传感器信号强度RSSI</td>
+			<td><input type="text" id="riss" value=""></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>数据包原始数据</td>
+			<td colspan="2"><textarea id="packageData" cols="50" rows="5"></textarea></td>
+		</tr>
+	</table>
+</body>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript">
+	$(function() {
+		var task;
+		var isfirst = true;
+		//window.clearInterval(requestComputeTask);
+		//task = window.setInterval(requestCompute,5000); 
+		//监听checkbox事件
+		$("#refresh").change(function() { 
+            //如果是选择
+			if(this.checked){
+            	if(isfirst){
+            		//开启
+            		isfirst = false;
+            	}
+            	task = window.setInterval(refresh,5000); 
+            }else{
+            	if(task){
+            		window.clearInterval(task);
+            	}
+            }
+			 
+        });
+		
+		var succuss = function(result) {
+			if (result && result.code == 200) {
+				//获取数据成功
+				var data = result.data;
+				if (data) {
+					//解析数据渲染
+					var Sensor_Id = data['Sensor_Id'], Gateway_Id = data['Gateway_Id'], riss = data['riss'], packageData = data['package'];
+					if (Sensor_Id) {
+						$('#sensorid').val(Sensor_Id);
+					}
+					if (Gateway_Id) {
+						$('#wgid').val(Gateway_Id);
+					}
+					if (riss) {
+						$('#riss').val(riss);
+					}
+					if (packageData) {
+						var str = '';
+						for (var i = 0; i < packageData.length; i++) {
+							str = str + packageData[i];
+						}
+						$('#packageData').text(str);
+					}
+				}
+			} else {
+				//获取数据失败，不做任何显示
+				console.info('获取数据失败!');
+			}
+		};
+		var error = function(textStatus) {
+			layer.msg('请求错误!');
+		}
+
+		var request = new baseRequest('Test/getZwInfoTest.do', succuss, error);
+		
+		var refresh = function() {
+			request.send({});
+		};
+
+	});
+</script>
+</html>
