@@ -12,7 +12,7 @@ td {
 }
 </style>
 <body>
-	<form id=_form>
+	<form id="_form">
 		<table width="800" border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<!--  
@@ -25,12 +25,12 @@ td {
 				<td>网关序列号</td>
 				<td><input type="text" name="Gateway_Id" value="0x12abcdef" /></td>
 				<input type="hidden" name="Upload_Sensor_Type" id="Upload_Sensor_Type" />
-				<td><input type="checkbox" gg="Upload_Sensor_Type" checked="checked" />振动启动</td>
+				<td><input type="checkbox" ctype="Upload_Sensor_Type" id="Upload_Sensor_Type0" checked="checked" />振动启动</td>
 			</tr>
 			<tr>
 				<td>传感器序列号</td>
 				<td><input type="text" name="Sensor_Id" value="0x12abcdef" /></td>
-				<td><input type="checkbox" gg="Upload_Sensor_Type" />直流上传</td>
+				<td><input type="checkbox" ctype="Upload_Sensor_Type" id="Upload_Sensor_Type1" />直流上传</td>
 			</tr>
 
 			<tr>
@@ -41,12 +41,12 @@ td {
 						<option value="2" selected="selected">10HZ高通滤波</option>
 				    </select>
 				</td>
-				<td><input type="checkbox" gg="Upload_Sensor_Type" />加速度上传</td>
+				<td><input type="checkbox" ctype="Upload_Sensor_Type"  id="Upload_Sensor_Type2"/>加速度上传</td>
 			</tr>
 			<tr>
 				<td>X方向角度</td>
 				<td><input type="text" name="X_Angle" value="0" /></td>
-				<td><input type="checkbox" gg="Upload_Sensor_Type" checked="checked" />速度上传</td>
+				<td><input type="checkbox"  ctype="Upload_Sensor_Type" id="Upload_Sensor_Type3" checked="checked" />速度上传</td>
 			</tr>
 			<tr>
 				<td>特征值采集间隔</td>
@@ -63,15 +63,14 @@ td {
 						<option value="9">1天</option>
 						<option value="10">2天</option>
 				</select></td>
-				<td rowspan="5"><input type="hidden" name="Upload_Wave_Type"
-					id="Upload_Wave_Type" /> <input type="checkbox"
-					id="Upload_Wave_Type0" checked="checked" />波形上传<br> <input
-					type="checkbox" id="Upload_Wave_Type1" />加速度X<br> <input
-					type="checkbox" id="Upload_Wave_Type2" />加速度Y<br> <input
-					type="checkbox" id="Upload_Wave_Type3" />加速度Z<br> <input
-					type="checkbox" id="Upload_Wave_Type4" checked="checked" />速度X<br>
-					<input type="checkbox" id="Upload_Wave_Type5" checked="checked" />速度Y<br>
-					<input type="checkbox" id="Upload_Wave_Type6" checked="checked" />速度Z<br>
+				<td rowspan="5"><input type="hidden" name="Upload_Wave_Type" id="Upload_Wave_Type" />
+					 <input type="checkbox" id="Upload_Wave_Type0" ctype="Upload_Wave_Type" checked="checked" />波形上传<br> 
+					 <input type="checkbox" id="Upload_Wave_Type1" ctype="Upload_Wave_Type"/>加速度X<br> 
+					 <input type="checkbox" id="Upload_Wave_Type2" ctype="Upload_Wave_Type"/>加速度Y<br> 
+					 <input type="checkbox" id="Upload_Wave_Type3" ctype="Upload_Wave_Type"/>加速度Z<br> 
+					 <input type="checkbox" id="Upload_Wave_Type4" ctype="Upload_Wave_Type" checked="checked" />速度X<br>
+					 <input type="checkbox" id="Upload_Wave_Type5" ctype="Upload_Wave_Type" checked="checked" />速度Y<br>
+					 <input type="checkbox" id="Upload_Wave_Type6" ctype="Upload_Wave_Type" checked="checked" />速度Z<br>
 				</td>
 			</tr>
 			<tr>
@@ -229,40 +228,88 @@ td {
 
 <script type="text/javascript">
 	$(function() {
-		var Upload_Sensor_Types = $('input [gg="Upload_Sensor_Type"]');
-		$.each(Upload_Sensor_Types,function(index,demo){
-			
-			alert(demo.checked);
-			
-		});
 		
-		/*var $form = $('#_form');
+		
+        var Upload_Sensor_Type_Checkbox = new baseCheckbox('Upload_Sensor_Type',8);
+        var Upload_Wave_Type_Checkbox = new baseCheckbox('Upload_Wave_Type',16);
+        
+		var $form = new baseForm('_form');
+
 		var onLoadSuccessCallBack = function(data){
 			//处理
+			var Upload_Sensor_Type = data.Upload_Sensor_Type;
+			if(Upload_Sensor_Type){
+				Upload_Sensor_Type_Checkbox.setValueBy10(Upload_Sensor_Type);
+			}
+			
+			var Upload_Wave_Type = data.Upload_Wave_Type;
+			if(Upload_Wave_Type){
+				Upload_Wave_Type_Checkbox.setValueBy10(Upload_Wave_Type);
+			}
 		};
-		var submitSuccessCallbackSave = function(){
-			layer.alert('操作成功！');
-		};
-		var submitSuccessCallbackSend = function(){
-			//加载条需要加载上一次包序号
+		
+		$form.load('Test/getLastData',onLoadSuccessCallBack);
+		
+		
+		var submitSuccessCallbackSave = function(result){
+			if(result && result.code == 200){
+				layer.alert('操作成功！');
+			}else{
+				layer.msg('保存失败!');
+			}
 			
 		};
 		
-		initForm($form,{onLoadSuccessCallBack:onLoadSuccessCallBack});
-		$form.form('load', 'Test/');
+		var task;
+		var taskId;
+		var submitSuccessCallbackSend = function(result){
+			//加载条需要加载上一次包序号
+			if(result && result.code == 200){
+				taskId = result.data;
+				//每隔间断获取数据
+				task = window.setInterval(refresh,5000); 
+				
+			}else{
+				layer.msg('下发失败!');
+			}
+			
+		};
+		
+       var taskrequest = new baseRequest('Test/getTaskStatus.do', function(result){
+    	   if(result && result.code == 200){
+    		   var taskResult = result.data;
+    		   //任务已经完成
+    		   if(taskResult && taskResult.status == 2){
+    			   var packageData = taskResult.packageData;
+    			   $('textarea[name="textarea1"]').text(packageData);
+    			   window.clearInterval(task);
+    		   }
+    	   }
+       });
+		
+		var refresh = function() {
+			taskrequest.send({taskId:taskId});
+		}; 
+		
 		//处理保存
 		$('#save').click(function(){
 			//处理隐藏域
+			var str1 = Upload_Sensor_Type_Checkbox.getValueBy10();
+			var str2 = Upload_Wave_Type_Checkbox.getValueBy10();
+			$('#Upload_Sensor_Type').val(str1);
+			$('#Upload_Wave_Type').val(str2);
+			$form.save('Test/save',submitSuccessCallbackSave);
 			
-			initForm($form,{onLoadSuccessCallBack:onLoadSuccessCallBack,url:'Test/save',submitSuccessCallback:submitSuccessCallbackSave});
-			$form.submit();
 		});
 		
 		//处理下发
 		$('#send').click(function(){
-			initForm($form,{onLoadSuccessCallBack:onLoadSuccessCallBack,url:'Test/send',submitSuccessCallback:submitSuccessCallbackSend});
-			$form.submit();
-		});*/
+			var str1 = Upload_Sensor_Type_Checkbox.getValueBy10();
+			var str2 = Upload_Wave_Type_Checkbox.getValueBy10();
+			$('#Upload_Sensor_Type').val(str1);
+			$('#Upload_Wave_Type').val(str2);
+			$form.save('Test/send',submitSuccessCallbackSend);
+		});
 		
 		
 	});
