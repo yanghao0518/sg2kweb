@@ -10,16 +10,13 @@
 	<form name="form1" action="" enctype="">
 		<table>
 			<tr>
-				<td><input type="submit" name="submit1" id="save" value="保存" /></td>
+				<td><input type="button" name="submit1" id="save" value="保存" /></td>
 				<td><input type="button" name="button2" id="send" value="下传" /></td>
 			</tr>
 			<tr>
-				<td><input type="checkbox" name="checkbox1" />网关号01<input
-					type="text" name="text1" id="wg1" value="0x12abc346"></td>
-				<td><input type="checkbox" name="checkbox2" />网关号02<input
-					type="text" name="text2" id="wg2" value="0x12abc347"></td>
-				<td><input type="checkbox" name="checkbox3" />网关号03<input
-					type="text" name="text3" id="wg3" value="0x12abc348"></td>
+				<td>网关号01<input type="text" name="text1" id="wg1" value="0x12abc346"></td>
+				<td>网关号02<input type="text" name="text2" id="wg2" value="0x12abc347"></td>
+				<td>网关号03<input type="text" name="text3" id="wg3" value="0x12abc348"></td>
 			</tr>
 			<tr>
 				<td>传感器序列号01<input type="text" name="c1" value="0x12abc345"></td>
@@ -128,6 +125,50 @@
 <script type="text/javascript">
 	$(function() {
 
+		//初始化
+		var tableinit = new baseRequest('Test/getFirstWgSensorsConfig.do',function(result){
+			if(result && result.code == 200 && result.data){
+				var wg1 = result.data.wg1;
+				var wg2 = result.data.wg2;
+				var wg3 = result.data.wg3;
+				if(wg1.Gateway_Id){
+					$('#wg1').val(wg1.Gateway_Id);
+				}
+				if(wg2.Gateway_Id){
+					$('#wg1').val(wg2.Gateway_Id);
+				}
+				
+				if(wg3.Gateway_Id){
+					$('#wg1').val(wg3.Gateway_Id);
+				}
+								
+				var Sensor_Ids1 = wg1.Sensor_Ids;
+				if(Sensor_Ids1 && Sensor_Ids1.length != 0){
+					tableLoad($("input[name='c1']"),Sensor_Ids1);
+				}
+				
+				var Sensor_Ids2 = wg2.Sensor_Ids;
+				if(Sensor_Ids2 && Sensor_Ids2.length != 0){
+					tableLoad($("input[name='c2']"),Sensor_Ids2);
+				}
+				
+				var Sensor_Ids3 = wg3.Sensor_Ids;
+				if(Sensor_Ids3 && Sensor_Ids3.length != 0){
+					tableLoad($("input[name='c3']"),Sensor_Ids3);
+				}
+			}
+		});
+		
+		tableinit.send({});
+		
+		function tableLoad($c,Sensor_Ids){
+			$.each($c, function(index, item) {
+				if(Sensor_Ids[index]){
+					item.value = Sensor_Ids[index];		
+					}
+			});
+		}
+		
 		var succuss = function(result) {
 			if (result && result.code == 200) {
 				layer.alert('操作成功!');
@@ -140,9 +181,9 @@
 			layer.msg('请求错误!');
 		}
 
-		var requestSave = new baseRequest('/Test/saveZwConfig.do', succuss,
+		var requestSave = new baseRequest('Test/saveZwConfig.do', succuss,
 				error);
-		var requestSend = new baseRequest('/Test/saveZwConfig.do', succuss,
+		var requestSend = new baseRequest('Test/sendZwConfig.do', succuss,
 				error);
 
 		$('#save').click(function() {
@@ -192,7 +233,7 @@
 				'Sensor_Ids' : c3arr
 			};
 
-			var data = [ data1, data2, data3 ];
+			var data = { 'wg1':data1, 'wg2':data2, 'wg3':data3 };
 
 			requestSave.send({
 				'jsonStr' : JSON.stringify(data)
@@ -247,7 +288,7 @@
 				'Sensor_Ids' : c3arr
 			};
 
-			var data = [ data1, data2, data3 ];
+			var data = { 'wg1':data1, 'wg2':data2, 'wg3':data3 };
 
 			requestSend.send({
 				'jsonStr' : JSON.stringify(data)

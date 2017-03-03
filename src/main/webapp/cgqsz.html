@@ -225,7 +225,12 @@ td {
 <script type="text/javascript" src="js/layer/layer.js"></script>
 <script type="text/javascript" src="js/jquery.form.js"></script>
 <script type="text/javascript" src="js/form.js"></script>
-
+<script type="text/javascript">
+	    function ityzl_SHOW_LOAD_LAYER(){
+	   		return layer.msg('努力中...', {icon: 16,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: '0px', time:100000}) ;
+	   	}
+	    var ityzl_index;
+</script>
 <script type="text/javascript">
 	$(function() {
 		
@@ -248,7 +253,7 @@ td {
 			}
 		};
 		
-		$form.load('Test/getLastData',onLoadSuccessCallBack);
+		$form.load('Test/getFirstSensorConfig.do',onLoadSuccessCallBack);
 		
 		
 		var submitSuccessCallbackSave = function(result){
@@ -275,20 +280,41 @@ td {
 			
 		};
 		
-       var taskrequest = new baseRequest('Test/getTaskStatus.do', function(result){
+       var taskrequest = new baseRequest('Test/getTaskResult.do', function(result){
     	   if(result && result.code == 200){
     		   var taskResult = result.data;
     		   //任务已经完成
-    		   if(taskResult && taskResult.status == 2){
+    		   if(taskResult && taskResult.status == 1){
+    			   layer.close(ityzl_index);
     			   var packageData = taskResult.packageData;
-    			   $('textarea[name="textarea1"]').text(packageData);
+    			   if(packageData){
+    				   var str = '';
+    				   $.each(packageData,function(index,d){
+    					   str = str + d;
+    				   });
+    				   $('textarea[name="textarea1"]').text(str);
+    			   }else{
+    				   layer.msg("获取下发网关配置失败!");
+    			   }
+    			   
     			   window.clearInterval(task);
     		   }
+    	   }else{
+    		   layer.close(ityzl_index);
+    		   window.clearInterval(task);
+    		   layer.msg("获取下发网关配置失败!");
     	   }
+       },function(status){
+    	   layer.close(ityzl_index);
+    	   window.clearInterval(task);
+    	   layer.msg("获取下发网关配置失败!");
+    	   
        });
 		
 		var refresh = function() {
-			taskrequest.send({taskId:taskId});
+			taskrequest.send({taskId:taskId},function(){
+				ityzl_index = ityzl_SHOW_LOAD_LAYER();
+			});
 		}; 
 		
 		//处理保存
@@ -298,7 +324,7 @@ td {
 			var str2 = Upload_Wave_Type_Checkbox.getValueBy10();
 			$('#Upload_Sensor_Type').val(str1);
 			$('#Upload_Wave_Type').val(str2);
-			$form.save('Test/save',submitSuccessCallbackSave);
+			$form.save('Test/saveSensorConfig.do',submitSuccessCallbackSave);
 			
 		});
 		
@@ -308,7 +334,7 @@ td {
 			var str2 = Upload_Wave_Type_Checkbox.getValueBy10();
 			$('#Upload_Sensor_Type').val(str1);
 			$('#Upload_Wave_Type').val(str2);
-			$form.save('Test/send',submitSuccessCallbackSend);
+			$form.save('Test/sendSensorConfig.do',submitSuccessCallbackSend);
 		});
 		
 		

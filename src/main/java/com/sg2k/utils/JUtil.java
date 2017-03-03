@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
+
+import com.alibaba.fastjson.JSONObject;
 
 final public class JUtil
 {
@@ -32,6 +35,11 @@ final public class JUtil
 	{
 		return splitToListString(fieldIdStr, ",");
 	}
+	
+	public static List<String> splitToListString(String fieldIdStr,String replace,String torepacle)
+	{
+		return splitToListString(fieldIdStr, ",",replace,torepacle);
+	}
 
 	/**
 	 * 字符串转换成list
@@ -46,6 +54,17 @@ final public class JUtil
 		List<String> listChars = new ArrayList<String>();
 		for (String cha : chars) {
 			listChars.add(cha);
+		}
+		return listChars;
+	}
+	
+	
+	public static List<String> splitToListString(String fieldIdStr, String character,String replace,String torepacle)
+	{
+		String[] chars = fieldIdStr.split(character);
+		List<String> listChars = new ArrayList<String>();
+		for (String cha : chars) {
+			listChars.add(cha.replace(replace, torepacle).replace(replace.toUpperCase(), torepacle));
 		}
 		return listChars;
 	}
@@ -209,6 +228,13 @@ final public class JUtil
 			strb.append(Integer.toString(random.nextInt(10)));
 		}
 		return strb.toString();
+	}
+	
+	public static void cloneJSONObject(JSONObject old,JSONObject newjson){
+		Set<String> keys = old.keySet();
+		for(String key:keys){
+			newjson.put(key, old.get(key));
+		}
 	}
 
 }

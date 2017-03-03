@@ -6,7 +6,7 @@ var baseRequest = function baseRequest(url, success, error) {
 	this.success = success;
 	this.error = error;
 }
-baseRequest.prototype.send = function(data) {
+baseRequest.prototype.send = function(data,beforeSend) {
 	var me = this;
 	if(!data){
 		data = {};
@@ -17,6 +17,11 @@ baseRequest.prototype.send = function(data) {
 		type : 'post',
 		dataType : 'json',
 		async : false,
+		beforeSend:function(){
+			if(beforeSend){
+				beforeSend();
+			}
+		},
 		success : function(result) {
 			if(me.success){
 				me.success(result);
@@ -45,7 +50,7 @@ var baseCheckbox = function baseCheckbox(ctype,byteSize){
 baseCheckbox.prototype.buzero = function(str,size){
 	if(size > 0){
 		for(var j=0;j<size;j++){
-			str + = '0';
+			str += '0';
 		}
 	}
 	return str;
@@ -54,7 +59,7 @@ baseCheckbox.prototype.buzero = function(str,size){
 baseCheckbox.prototype.getValue = function(){
 	var types = $('input[ctype="'+this.ctype+'"]');
 	var str = ''; 
-	var i = 1;
+	var i = 0;
 	$.each(types,function(index,demo){
 		if(demo.checked){
 			str = str + '1';
@@ -73,7 +78,7 @@ baseCheckbox.prototype.getValueBy10 = function(){
 };
 
 baseCheckbox.prototype.setValueBy10 = function(value){
-	value =  value.toString(2);
+	value =  parseInt(value.toString()).toString(2);
 	var types = $('input[ctype="'+this.ctype+'"]');
 	$.each(types,function(index,demo){
 		var x = value.charAt(index);
@@ -124,19 +129,6 @@ baseForm.prototype.save = function(url,call){
 	var formdata = this.getSendData();
 	request.send({'formdata':JSON.stringify(formdata)});
 };
-baseForm.prototype.load = function(url,beforLoad){
-	var request = new baseRequest(url,function(result){
-		if(result && result.code == 200 && result.data){
-			this.loadData(result.data);
-			if(beforLoad){
-				beforLoad(result.data);
-			}
-		}else{
-			layer.msg('加载数据失败!');
-		}
-	});
-	request.send({});
-};
 
 baseForm.prototype.loadData = function(obj){
 	var key,value,tagName,type,arr;
@@ -168,3 +160,22 @@ baseForm.prototype.loadData = function(obj){
 		});
 	}
 }
+
+baseForm.prototype.load = function(url,beforLoad){
+	var me = this;
+	var request = new baseRequest(url,function(result){
+		if(result && result.code == 200 && result.data){
+			me.loadData(result.data);
+			if(beforLoad){
+				beforLoad(result.data);
+			}
+		}else if(result && result.code == 200 && !result.data){
+			layer.msg('暂无数据!');
+		}else{
+			layer.msg('加载数据失败!');
+		}
+	});
+	request.send({});
+};
+
+

@@ -12,112 +12,154 @@
 		}
 	</style>
 <body>
-	<div><input type="checkbox" name="checkbox1"/>刷新/停止</div>
+	<div><input type="checkbox" id="refresh"/>刷新/停止</div>
+	<form action="" id="_form">
 	<hr width="600" align="left">
 	<table width="400">
 		<tr>
 			<td width="40%">Constant_Up</td>
-			<td><input type="text" name="text1"/></td>
+			<td><input type="text" name="Constant_Up"/></td>
 		</tr>
 		<tr>
-			<td>Id</td>
-			<td><input type="text" name="text2"/></td>
+			<td>Gateway_Id</td>
+			<td><input type="text" name="Gateway_Id"/></td>
 		</tr>
 		<tr>
 			<td>Protocol_ Type</td>
-			<td><input type="text" name="text3"/></td>
+			<td><input type="text" name="Package_Type"/></td>
 		</tr>
 		<tr>
 			<td>Version</td>
-			<td><input type="text" name="text4"/></td>
+			<td><input type="text" name="Version"/></td>
 		</tr>
 	</table>
 	<hr width="600" align="left">
 	<table width="400">
 		<tr>
 			<td width="40%">Package_ Length</td>
-			<td><input type="text" name="text5"/></td>
+			<td><input type="text" name="Package_length"/></td>
 		</tr>
 		<tr>
 			<td>Package_ Number</td>
-			<td><input type="text" name="text6"/></td>
+			<td><input type="text" name="Package_Number"/></td>
 		</tr>
 		<tr>
 			<td>command_ properties</td>
-			<td><input type="text" name="text7"/></td>
+			<td><input type="text" name="command_properties"/></td>
 		</tr>
 		<tr>
 			<td>Battery</td>
-			<td><input type="text" name="text8"/></td>
+			<td><input type="text" name="Battery"/></td>
 		</tr>
 	</table>
 	<hr width="600" align="left">
 	<table width="400">
 		<tr>
 			<td width="40%">Temperature</td>
-			<td><input type="text" name="text5"/></td>
+			<td><input type="text" name="Temperature"/></td>
 		</tr>
 		<tr>
 			<td>Character_Attribute</td>
-			<td><input type="text" name="text6"/></td>
+			<td><input type="text" name="Character_Attribute"/></td>
 		</tr>
 		<tr>
 			<td>Data_ coefficient</td>
-			<td><input type="text" name="text7"/></td>
+			<td><input type="text" name="Data_coefficient"/></td>
 		</tr>
 	</table>
 	<hr width="600" align="left">
 	<table width="400">
 		<tr>
 			<td width="40%">Data _x_Rms</td>
-			<td><input type="text" name="text5"/></td>
+			<td><input type="text" name="Data_x_Rms"/></td>
 		</tr>
 		<tr>
 			<td>Data _x_PP</td>
-			<td><input type="text" name="text6"/></td>
+			<td><input type="text" name="Data_x_PP"/></td>
 		</tr>
 		<tr>
 			<td>Data _x_P</td>
-			<td><input type="text" name="text7"/></td>
+			<td><input type="text" name="Data_x_P"/></td>
 		</tr>
 	</table>
 	<hr width="600" align="left">
 	<table width="400">
 		<tr>
 			<td width="40%">Data _Y_Rms</td>
-			<td><input type="text" name="text5"/></td>
+			<td><input type="text" name="Data_y_Rms"/></td>
 		</tr>
 		<tr>
 			<td>Data _Y_PP</td>
-			<td><input type="text" name="text6"/></td>
+			<td><input type="text" name="Data_y_PP"/></td>
 		</tr>
 		<tr>
 			<td>Data _Y_P</td>
-			<td><input type="text" name="text7"/></td>
+			<td><input type="text" name="Data_y_P"/></td>
 		</tr>
 	</table>
 	<hr width="600" align="left">
 	<table width="400">
 		<tr>
 			<td width="40%">Data _Z_Rms</td>
-			<td><input type="text" name="text5"/></td>
+			<td><input type="text" name="Data_z_Rms"/></td>
 		</tr>
 		<tr>
 			<td>Data _Z_PP</td>
-			<td><input type="text" name="text6"/></td>
+			<td><input type="text" name="Data_z_PP"/></td>
 		</tr>
 		<tr>
 			<td>Data _Z_P</td>
-			<td><input type="text" name="text7"/></td>
+			<td><input type="text" name="Data_z_P"/></td>
 		</tr>
 		<tr>
 			<td>BBC</td>
-			<td><input type="text" name="text7"/></td>
+			<td><input type="text" name="BCC"/></td>
 		</tr>
 		<tr>
 			<td>数据包原始数据</td>
-			<td><textarea name="textarea2" cols="" rows=""></textarea></td>
+			<td><textarea id="datapackage" cols="" rows=""></textarea></td>
 		</tr>
 	</table>
+	</form>
 </body>
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+
+<script type="text/javascript">
+$(function() {
+	   var task;
+	   $("#refresh").change(function() { 
+            //如果是选择
+			if(this.checked){
+            	task = window.setInterval(refresh,5000); 
+            }else{
+            	if(task){
+            		window.clearInterval(task);
+            	}
+            }
+        });
+		
+		var $form = new baseForm('_form');
+		var onLoadSuccessCallBack = function(data){
+			//处理
+			var datapackage = data.datapackage;
+			if(datapackage){
+				var str = '';
+				$.each(datapackage,function(index,d){
+					str = str + d;
+				});
+				$('#datapackage').val(str);
+			}
+			
+		};
+		
+		
+		var refresh = function() {
+			$form.load('Test/getPubCharacter.do',onLoadSuccessCallBack);
+		};
+		
+		
+	});
+</script>
 </html>
